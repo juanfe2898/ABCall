@@ -38,7 +38,7 @@ async function consultarIncidentes() {
         };
  
         // Hacer la solicitud fetch y esperar la respuesta
-        const response = await fetch("http://10.0.46.58:4000/graphql/incident_management/incident/", requestOptions);
+        const response = await fetch("http://135.237.75.120:4000/graphql/incident_management/incident/", requestOptions);
  
         // Verificar si la respuesta fue exitosa (si el fetch tuvo éxito)
         if (!response.ok) {

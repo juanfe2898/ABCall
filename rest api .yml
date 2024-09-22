@@ -38,7 +38,6 @@ metadata:
   name: rest-api
   namespace: abcall
 spec:
-  type: LoadBalancer
   ports:
   - port: 3000
   selector:

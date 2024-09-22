@@ -7,7 +7,11 @@ const app = express();
 const port = 4000;
 
 // Enable CORS for all origins
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  methods: 'GET,POST,OPTIONS',
+  allowedHeaders: 'Content-Type, Authorization',
+  }));
 
 // Registro de GraphQL en el path
 app.use('/graphql/incident_management/incident/', graphqlHTTP({
