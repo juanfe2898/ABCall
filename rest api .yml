@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rest-api
+  namespace: abcall
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rest-api
+  template:
+    metadata:
+      labels:
+        app: rest-api
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+      - name: rest-api
+        image: crabcall.azurecr.io/samples/rest-api:latest
+        env:
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 3000
+          name: entrada
+        - containerPort: 3306
+          name: bd  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rest-api
+  namespace: abcall
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 3000
+  selector:
+    app: rest-api

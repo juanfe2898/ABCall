@@ -1,0 +1,10 @@
+version: '3'
+services:
+  web:
+    build: .
+    ports:
+      - "80:80"  # Exponer el puerto 8080 en tu máquina y redirigir al puerto 80 del contenedor
+    volumes:
+      - ./html:/usr/share/nginx/html
+      - ./css:/usr/share/nginx/html/css
+      - ./js:/usr/share/nginx/html/js

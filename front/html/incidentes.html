@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABCall - Consulta de Incidentes</title>
+    <link rel="stylesheet" href="/css/incidentes.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>ABCall - Consulta de Incidentes</h1>
+    
+    <label for="incidentId">Ingrese el ID de Usuario para consultar sus incidentes:</label>
+    <input type="text" id="incidentId" placeholder="ID de Usuario">
+
+    <button onclick="consultarIncidentes()">Consultar Incidentes</button>
+
+    <div class="result" id="result"></div>
+
+    <div class="button-group"><button onclick="volver()">volver</button></div>
+
+</div>
+
+<script src="/js/incidentes.js"></script>
+
+</body>
+</html>

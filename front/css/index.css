@@ -1,0 +1,67 @@
+/* Estilo general del cuerpo */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f8ff;
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilo del contenedor principal */
+.container {
+    width: 60%;
+    margin: auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    margin-top: 100px;
+    text-align: center;
+}
+
+/* Estilo del encabezado */
+h1 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Estilo del texto de introducción */
+p {
+    color: #666;
+    margin-bottom: 30px;
+    font-size: 1.1em;
+}
+button {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+}
+/* Estilo de los botones */
+.button-group button {
+    background-color: #007bff;
+    color: white;
+    padding: 15px 30px;
+    margin: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Cambios al hacer hover sobre los botones */
+.button-group button:hover {
+    background-color: #0056b3;
+}
+
+/* Estilo de los resultados */
+.result {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #e7f3e7;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: none;
+}

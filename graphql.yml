@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: graphql-api
+  namespace: abcall
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: graphql-api
+  template:
+    metadata:
+      labels:
+        app: graphql-api
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+      - name: graphql-api
+        image: crabcall.azurecr.io/samples/graphql-api:latest
+        env:
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 4000
+          name: entrada
+        - containerPort: 3306
+          name: bd  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: graphql-api
+  namespace: abcall
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 3000
+  selector:
+    app: graphql-api
