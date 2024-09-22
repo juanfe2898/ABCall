@@ -21,11 +21,11 @@ spec:
         env:
         resources:
           requests:
-            cpu: 100m
-            memory: 128Mi
+            cpu: 20m
+            memory: 20Mi
           limits:
-            cpu: 250m
-            memory: 256Mi
+            cpu: 40m
+            memory: 40Mi
         ports:
         - containerPort: 3000
           name: entrada

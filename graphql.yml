@@ -40,6 +40,6 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
-  - port: 3000
+  - port: 4000
   selector:
     app: graphql-api

@@ -12,6 +12,8 @@ spec:
     metadata:
       labels:
         app: abcallwebpage
+      annotations:
+        sidecar.istio.io/inject: "true"
     spec:
       nodeSelector:
         "kubernetes.io/os": linux
@@ -20,11 +22,11 @@ spec:
         image: crabcall.azurecr.io/samples/abcallwebpage:latest
         resources:
           requests:
-            cpu: 100m
-            memory: 128Mi
+            cpu: 20m
+            memory: 20Mi
           limits:
-            cpu: 250m
-            memory: 256Mi
+            cpu: 30m
+            memory: 30Mi
         ports:
         - containerPort: 80
 ---
