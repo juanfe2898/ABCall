@@ -15,7 +15,7 @@ router.get('/call/user/:id', async (req, res) => {
 
   try {
     const call= await getCallService(userId);
-    res.status(200).json({ userId, call });
+    res.status(200).json({ ...call });
   } catch (error) {
     console.error('Error al obtener el conteo de llamadas:', error);
     res.status(500).json({ error: 'Error interno del servidor' });
