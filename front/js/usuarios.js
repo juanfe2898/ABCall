@@ -19,7 +19,7 @@ async function consultarUsuario() {
         const callResponse = await response.json();
 
         resultado.innerHTML = `
-            <p><strong>id de usuario:</strong> ${callResponse?.idLlamada}</p>
+            <p><strong>id de llamada:</strong> ${callResponse?.idLlamada}</p>
             <p><strong>Fecha llamada:</strong> ${callResponse?.fechaLlamada}</p>
              <p><strong>Calificacion:</strong> ${callResponse?.calificacion}</p>
             <p><strong>id de usuario:</strong> ${callResponse?.idUsuario}</p>
