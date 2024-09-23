@@ -8,7 +8,7 @@ async function consultarUsuario() {
 
     try {
         // Hacer el fetch con una consulta GET
-       const response = await fetch(`http://10.0.195.238:3000/rest/incident_management/call/user/${userId}`);
+       const response = await fetch(`http://rest-api.68.220.194.229.nip.io:80/rest/incident_management/call/user/${userId}`);
        //const response = await fetch(`http://172.212.120.235:3000/rest/incident_management/call/countByUser/user/${userId}`);
         // Verificar si la respuesta fue exitosa
         if (!response.ok) {

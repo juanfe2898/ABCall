@@ -1,5 +1,4 @@
 async function consultarIncidentes() {
-    const incidentId = document.getElementById('incidentId').value;
     const resultado = document.getElementById('result');
  
     // Limpiar resultados previos
@@ -38,7 +37,7 @@ async function consultarIncidentes() {
         };
  
         // Hacer la solicitud fetch y esperar la respuesta
-        const response = await fetch("http://135.237.75.120:4000/graphql/incident_management/incident/", requestOptions);
+        const response = await fetch("http://graphql-api.68.220.194.229.nip.io:80/graphql/incident_management/incident/", requestOptions);
  
         // Verificar si la respuesta fue exitosa (si el fetch tuvo éxito)
         if (!response.ok) {
