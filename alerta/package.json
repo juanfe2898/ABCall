@@ -1,0 +1,11 @@
+{
+  "name": "alerta",
+  "version": "1.0.0",
+  "description": "This is the alerta microservise that will be hearing some kafka topics to send tome messages through email",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
