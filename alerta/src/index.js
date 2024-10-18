@@ -1,13 +1,13 @@
 const { EmailClient } = require("@azure/communication-email");
 const { Kafka } = require('kafkajs');
  
-const connectionString = "NN";
+const connectionString = "endpoint=https://abcallmessage.unitedstates.communication.azure.com/;accesskey=BJqYSH8YXOBofNeXuPRc8p4b60nApOxDqV3MwyKbyDSmUB8kSVmmJQQJ99AJACULyCpr9LF1AAAAAZCSlH24";
 const client = new EmailClient(connectionString);
 
 // Configure the Kafka client
 const kafka = new Kafka({
   clientId: 'AlertConsumer',
-  brokers: ['localhost:9092'] // Replace with your Kafka broker addresses
+  brokers: ['http://vmkafkaabcall.eastus.cloudapp.azure.com:9092'] // Replace with your Kafka broker addresses
 });
 
 // Create a consumer instance and subscribe to a topic
