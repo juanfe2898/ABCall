@@ -5,7 +5,7 @@ const { v4: uuidv4 } = require('uuid');
 // Configure the Kafka client
 const kafka = new Kafka({
   clientId: 'ABCalAnalisisAudioConsumerProducer',
-  brokers: ['localhost:9092'] // Replace with your Kafka broker addresses
+  brokers: ['vmkafkaabcall.eastus.cloudapp.azure.com:9092'] // Replace with your Kafka broker addresses
 });
 
 // Create a consumer instance and subscribe to a topic
