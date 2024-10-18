@@ -7,7 +7,7 @@ const client = new EmailClient(connectionString);
 // Configure the Kafka client
 const kafka = new Kafka({
   clientId: 'AlertConsumer',
-  brokers: ['http://vmkafkaabcall.eastus.cloudapp.azure.com:9092'] // Replace with your Kafka broker addresses
+  brokers: ['vmkafkaabcall.eastus.cloudapp.azure.com:9092'] // Replace with your Kafka broker addresses
 });
 
 // Create a consumer instance and subscribe to a topic
