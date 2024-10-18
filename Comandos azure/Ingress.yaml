@@ -1,0 +1,46 @@
+cat <<EOF | kubectl apply -f -
+apiVersion: networking.istio.io/v1
+kind: Gateway
+metadata:
+  name: rest-api-gateway
+  namespace: istio-system
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http-a
+      protocol: HTTP
+    hosts:
+    - "rest-api.68.220.194.229.nip.io"
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: rest-api-vs
+  namespace: istio-system
+spec:
+  hosts:
+  - "rest-api.68.220.194.229.nip.io"
+  gateways:
+  - rest-api-gateway
+  http:
+  - route:
+    - destination:
+        host: rest-api
+        port:
+          number: 3000
+---
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: rest-api
+  namespace: istio-system
+spec:
+  host: rest-api
+  trafficPolicy:
+    tls:
+      mode: DISABLE
+---
+EOF

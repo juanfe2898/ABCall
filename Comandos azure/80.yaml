@@ -1,0 +1,63 @@
+cat <<EOF | kubectl apply -f -
+apiVersion: networking.istio.io/v1
+kind: Gateway
+metadata:
+  name: zookeeper-gateway
+  namespace: istio-system
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "zookeeper.68.220.194.229.nip.io"
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: zookeeper-vs
+  namespace: istio-system
+spec:
+  hosts:
+  - "zookeeper.68.220.194.229.nip.io"
+  gateways:
+  - zookeeper-gateway
+  http:
+  - route:
+    - destination:
+        host: zookeeper
+        port:
+          number: 9092
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: zookeeper-vs-2181
+  namespace: istio-system
+spec:
+  hosts:
+  - "zookeeper.68.220.194.229.nip.io"
+  gateways:
+  - zookeeper-gateway
+  http:
+  - route:
+    - destination:
+        host: zookeeper
+        port:
+          number: 2181
+---
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: zookeeper-destination-rule
+  namespace: istio-system
+spec:
+  host: zookeeper
+  trafficPolicy:
+    tls:
+      mode: DISABLE
+---
+EOF
