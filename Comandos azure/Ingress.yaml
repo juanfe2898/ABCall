@@ -2,7 +2,7 @@ cat <<EOF | kubectl apply -f -
 apiVersion: networking.istio.io/v1
 kind: Gateway
 metadata:
-  name: rest-api-gateway
+  name: zookeeper
   namespace: istio-system
 spec:
   selector:
@@ -13,32 +13,32 @@ spec:
       name: http-a
       protocol: HTTP
     hosts:
-    - "rest-api.68.220.194.229.nip.io"
+    - "zookeeper.68.220.194.229.nip.io"
 ---
 apiVersion: networking.istio.io/v1
 kind: VirtualService
 metadata:
-  name: rest-api-vs
+  name: zookeeper-vs
   namespace: istio-system
 spec:
   hosts:
-  - "rest-api.68.220.194.229.nip.io"
+  - "zookeeper.68.220.194.229.nip.io"
   gateways:
-  - rest-api-gateway
+  - zookeeper
   http:
   - route:
     - destination:
-        host: rest-api
+        host: zookeeper
         port:
-          number: 3000
+          number: 2181
 ---
 apiVersion: networking.istio.io/v1
 kind: DestinationRule
 metadata:
-  name: rest-api
+  name: zookeeper
   namespace: istio-system
 spec:
-  host: rest-api
+  host: zookeeper
   trafficPolicy:
     tls:
       mode: DISABLE

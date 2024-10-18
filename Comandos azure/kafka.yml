@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafkanodo
+  namespace: istio-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafkanodo
+  template:
+    metadata:
+      labels:
+        app: kafkanodo
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+      - name: kafkanodo
+        image: crabcall.azurecr.io/samples/kafkanodo:latest
+        resources:
+          requests:
+            cpu: 200m
+            memory: 1G
+          limits:
+            cpu: 600m
+            memory: 2G
+        ports:
+        - containerPort: 9092
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafkanodo
+  namespace: istio-system
+spec:
+  ports:
+  - port: 9092
+  selector:
+    app: kafkanodo   
+---
+cat <<EOF | kubectl apply -f -
+apiVersion: networking.istio.io/v1
+kind: Gateway
+metadata:
+  name: kafkanodo-gateway
+  namespace: istio-system
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 9092
+      name: http-a
+      protocol: HTTP
+    hosts:
+    - "kafkanodo.68.220.194.229.nip.io"
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: kafkanodo-vs
+  namespace: istio-system
+spec:
+  hosts:
+  - "kafkanodo.68.220.194.229.nip.io"
+  gateways:
+  - kafkanodo-gateway
+  http:
+  - route:
+    - destination:
+        host: kafkanodo
+        port:
+          number: 9092
+---
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: kafkanodo
+  namespace: istio-system
+spec:
+  host: kafkanodo
+  trafficPolicy:
+    tls:
+      mode: DISABLE
+---
+EOF

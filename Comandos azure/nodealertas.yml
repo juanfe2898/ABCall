@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodealertas
+  namespace: istio-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodealertas
+  template:
+    metadata:
+      labels:
+        app: nodealertas
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+      - name: nodealertas
+        image: crabcall.azurecr.io/samples/nodealertas:latest
+        resources:
+          requests:
+            cpu: 100m
+            memory: 200Mi
+          limits:
+            cpu: 150m
+            memory: 300Mi
+        ports:
+        - containerPort: 9092
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodealertas
+  namespace: istio-system
+spec:
+  ports:
+  - port: 9092
+  selector:
+    app: nodealertas   
+---
+cat <<EOF | kubectl apply -f -
+apiVersion: networking.istio.io/v1
+kind: Gateway
+metadata:
+  name: nodealertas-gateway
+  namespace: istio-system
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 9092
+      name: http-a
+      protocol: HTTP
+    hosts:
+    - "nodealertas.68.220.194.229.nip.io"
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: nodealertas-vs
+  namespace: istio-system
+spec:
+  hosts:
+  - "nodealertas.68.220.194.229.nip.io"
+  gateways:
+  - nodealertas-gateway
+  http:
+  - route:
+    - destination:
+        host: nodealertas
+        port:
+          number: 9092
+---
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: nodealertas
+  namespace: istio-system
+spec:
+  host: nodealertas
+  trafficPolicy:
+    tls:
+      mode: DISABLE
+---
+EOF

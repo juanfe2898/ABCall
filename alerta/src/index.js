@@ -7,7 +7,7 @@ const client = new EmailClient(connectionString);
 // Configure the Kafka client
 const kafka = new Kafka({
   clientId: 'AlertConsumer',
-  brokers: ['localhost:9092'] // Replace with your Kafka broker addresses
+  brokers: ['4.152.210.190:9092'] // Replace with your Kafka broker addresses
 });
 
 // Create a consumer instance and subscribe to a topic
