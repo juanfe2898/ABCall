@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: analisistexto
+  namespace: istio-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: analisistexto
+  template:
+    metadata:
+      labels:
+        app: analisistexto
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+      - name: analisistexto
+        image: crabcall.azurecr.io/samples/analisistexto:latest
+        resources:
+          requests:
+            cpu: 100m
+            memory: 200Mi
+          limits:
+            cpu: 150m
+            memory: 300Mi
+        ports:
+        - containerPort: 9092
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: analisistexto
+  namespace: istio-system
+spec:
+  ports:
+  - port: 9092
+  selector:
+    app: analisistexto   
+---
+cat <<EOF | kubectl apply -f -
+apiVersion: networking.istio.io/v1
+kind: Gateway
+metadata:
+  name: analisistexto-gateway
+  namespace: istio-system
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 9092
+      name: http-a
+      protocol: HTTP
+    hosts:
+    - "analisistexto.68.220.194.229.nip.io"
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: analisistexto-vs
+  namespace: istio-system
+spec:
+  hosts:
+  - "analisistexto.68.220.194.229.nip.io"
+  gateways:
+  - analisistexto-gateway
+  http:
+  - route:
+    - destination:
+        host: analisistexto
+        port:
+          number: 9092
+---
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: analisistexto
+  namespace: istio-system
+spec:
+  host: analisistexto
+  trafficPolicy:
+    tls:
+      mode: DISABLE
+---
+EOF
