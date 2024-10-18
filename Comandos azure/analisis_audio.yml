@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: analisis_audio
+  name: analisisaudio
   namespace: istio-system
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: analisis_audio
+      app: analisisaudio
   template:
     metadata:
       labels:
-        app: analisis_audio
+        app: analisisaudio
       annotations:
         sidecar.istio.io/inject: "true"
     spec:
       nodeSelector:
         "kubernetes.io/os": linux
       containers:
-      - name: analisis_audio
-        image: crabcall.azurecr.io/samples/analisis_audio:latest
+      - name: analisisaudio
+        image: crabcall.azurecr.io/samples/analisisaudio:latest
         resources:
           requests:
             cpu: 100m
@@ -33,10 +33,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: analisis_audio
+  name: analisisaudio
   namespace: istio-system
 spec:
   ports:
   - port: 9092
   selector:
-    app: analisis_audio
+    app: analisisaudio
