@@ -14,12 +14,12 @@ class KafkaProducer {
     await this.producer.connect();
   }
 
-  async sendMessage(topic, key, value) {
+  async sendMessage(key, value) {
     try {
       await this.connect();
 
       const result = await this.producer.send({
-        topic,
+        topic: 'usuario-actualizado',
         messages: [{ key, value }],
       });
       console.log('Mensaje enviado:', result);
