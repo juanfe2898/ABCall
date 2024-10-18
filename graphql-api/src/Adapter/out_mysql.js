@@ -54,6 +54,30 @@ class IncidentRepository {
       }
     }
   }
+
+  async createIncident(incidentData) {
+    const { tipoIncidente, descripcionIncidente, fechaIncidente, estadoIncidente, cedula} = incidentData;
+    const query = 'INSERT INTO incidente (tipoIncidente, descripcionIncidente, fechaIncidente, estadoIncidente,  cedula ) VALUES (?, ?, ?, ?, ?)';
+    
+    try {
+      const connection = await this.pool.getConnection();
+      const [result] = await connection.query(query, [tipoIncidente, descripcionIncidente, fechaIncidente, estadoIncidente, cedula]);
+      
+      // Devuelve el incidente recién creado
+      return {
+        idIncidente: result.insertId, // ID generado por la base de datos
+        tipoIncidente,
+        descripcionIncidente,
+        fechaIncidente,
+        estadoIncidente,
+        cedula
+      };
+    } catch (error) {
+      console.error('Error al crear incidente:', error);
+      throw new Error('Error al crear incidente');
+    }
+  }
+
 }
 
 

@@ -1,5 +1,5 @@
-const { GraphQLObjectType, GraphQLSchema, GraphQLInt, GraphQLString, GraphQLList } = require('graphql');
-const getIncidents = require('../Domain/get-incidents');
+const { GraphQLObjectType, GraphQLSchema, GraphQLInt, GraphQLString, GraphQLList,  GraphQLNonNull } = require('graphql');
+const {getIncidents, createIncident }= require('../Domain/incidents-service');
 
 
 const UsuarioType = new GraphQLObjectType({
@@ -23,7 +23,8 @@ const IncidenteType = new GraphQLObjectType({
     descripcionIncidente: { type: GraphQLString },
     fechaIncidente: { type: GraphQLString },
     estadoIncidente: { type: GraphQLString },
-    usuario: { type: UsuarioType }
+    usuario: { type: UsuarioType },
+    cedula: { type: GraphQLString }
   }
 });
 
@@ -39,6 +40,27 @@ const RootQuery = new GraphQLObjectType({
   }
 });
 
+
+const Mutation = new GraphQLObjectType({
+  name: 'Mutation',
+  fields: {
+    createIncident: {
+      type: IncidenteType,
+      args: {
+        tipoIncidente: { type: new GraphQLNonNull(GraphQLString) },
+        descripcionIncidente: { type: new GraphQLNonNull(GraphQLString) },
+        fechaIncidente: { type: new GraphQLNonNull(GraphQLString) },
+        estadoIncidente: { type: new GraphQLNonNull(GraphQLString) },
+        idUsuario: { type: new GraphQLNonNull(GraphQLInt) },
+        cedula: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve(parent, args) {
+        return createIncident(args);
+      }
+    }
+  }
+});
 module.exports = new GraphQLSchema({
-  query: RootQuery
+  query: RootQuery,
+  mutation: Mutation
 });
