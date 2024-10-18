@@ -52,7 +52,7 @@ spec:
     istio: ingressgateway
   servers:
   - port:
-      number: 9092
+      number: 80
       name: http-a
       protocol: HTTP
     hosts:
