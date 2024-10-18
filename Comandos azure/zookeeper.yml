@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zookeeper
+  namespace: istio-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zookeeper
+  template:
+    metadata:
+      labels:
+        app: zookeeper
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+      - name: zookeeper
+        image: crabcall.azurecr.io/samples/zookeeper:latest
+        resources:
+          requests:
+            cpu: 200m
+            memory: 1G
+          limits:
+            cpu: 500m
+            memory: 2G
+        ports:
+        - name: zookeeper9092
+          containerPort: 9092
+        - name: zookeeper2181
+          containerPort: 2181
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zookeeper
+  namespace: istio-system
+spec:
+  type: LoadBalancer
+  ports:
+  - name: zookeeper9092
+    port: 9092
+    targetPort: 9092
+  - name: zookeeper2181
+    port: 2181
+    targetPort: 2181
+  selector:
+    app: zookeeper
