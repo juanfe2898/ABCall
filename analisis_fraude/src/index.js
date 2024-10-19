@@ -5,7 +5,7 @@ const userRepository = require('./out_mysql');
 // Configure the Kafka client
 const kafka = new Kafka({
   clientId: 'ABCalAnalisisFraudeConsumerProducer',
-  brokers: ['vmkafkaabcall.eastus.cloudapp.azure.com:9092'] // Replace with your Kafka broker addresses
+  brokers: ['192.168.10.11:9092'] // Replace with your Kafka broker addresses
 });
 
 // Create a consumer instance and subscribe to a topic

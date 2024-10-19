@@ -1,7 +1,7 @@
 const { Kafka } = require('kafkajs');
 const { v4: uuidv4 } = require('uuid');
 class KafkaProducer {
-  constructor(clientId = 'ABCalAnalisisFraudeConsumerProducer', brokers = ['vmkafkaabcall.eastus.cloudapp.azure.com:9092']) {
+  constructor(clientId = 'ABCalAnalisisFraudeConsumerProducer', brokers = ['localhost:9092']) {
     this.kafka = new Kafka({
       clientId,
       brokers,

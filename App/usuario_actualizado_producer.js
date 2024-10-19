@@ -3,7 +3,7 @@ const { Kafka } = require('kafkajs');
 // Configure the Kafka instance
 const kafka = new Kafka({
   clientId: 'ProducesAbCall',
-  brokers: ['vmkafkaabcall.eastus.cloudapp.azure.com:9092'] // Replace with your Kafka broker addresses
+  brokers: ['localhost:9092'] // Replace with your Kafka broker addresses
 });
  
 // Create a producer instance

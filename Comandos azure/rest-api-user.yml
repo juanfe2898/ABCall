@@ -1,51 +1,51 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rest-api-factura
+  name: rest-api-user
   namespace: istio-system
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: rest-api-factura
+      app: rest-api-user
   template:
     metadata:
       labels:
-        app: rest-api-factura
+        app: rest-api-user
       annotations:
         sidecar.istio.io/inject: "true"
     spec:
       nodeSelector:
         "kubernetes.io/os": linux
       containers:
-      - name: rest-api-factura
-        image: crabcall.azurecr.io/samples/rest-api-factura:latest
+      - name: rest-api-user
+        image: crabcall.azurecr.io/samples/rest-api-user:latest
         resources:
           requests:
             cpu: 100m
             memory: 200Mi
           limits:
-            cpu: 150m
-            memory: 250Mi
+            cpu: 200m
+            memory: 300Mi
         ports:
-        - containerPort: 3003
+        - containerPort: 3004
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: rest-api-factura
+  name: rest-api-user
   namespace: istio-system
 spec:
   ports:
-  - port: 3003
+  - port: 3004
   selector:
-    app: rest-api-factura   
+    app: rest-api-user   
 ---
 cat <<EOF | kubectl apply -f -
 apiVersion: networking.istio.io/v1
 kind: Gateway
 metadata:
-  name: rest-api-factura-gateway
+  name: rest-api-user-gateway
   namespace: istio-system
 spec:
   selector:
@@ -56,32 +56,32 @@ spec:
       name: http-a
       protocol: HTTP
     hosts:
-    - "rest-api-factura.68.220.194.229.nip.io"
+    - "rest-api-user.68.220.194.229.nip.io"
 ---
 apiVersion: networking.istio.io/v1
 kind: VirtualService
 metadata:
-  name: rest-api-factura-vs
+  name: rest-api-user-vs
   namespace: istio-system
 spec:
   hosts:
-  - "rest-api-factura.68.220.194.229.nip.io"
+  - "rest-api-user.68.220.194.229.nip.io"
   gateways:
-  - rest-api-factura-gateway
+  - rest-api-user-gateway
   http:
   - route:
     - destination:
-        host: rest-api-factura
+        host: rest-api-user
         port:
-          number: 3003
+          number: 3004
 ---
 apiVersion: networking.istio.io/v1
 kind: DestinationRule
 metadata:
-  name: rest-api-factura
+  name: rest-api-user
   namespace: istio-system
 spec:
-  host: rest-api-factura
+  host: rest-api-user
   trafficPolicy:
     tls:
       mode: DISABLE
