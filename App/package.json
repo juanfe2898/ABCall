@@ -1,7 +1,6 @@
 {
   "name": "app",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -13,5 +12,6 @@
     "@azure/identity": "^4.5.0",
     "kafkajs": "^2.2.4",
     "uuid": "^10.0.0"
-  }
+  },
+  "description": ""
 }

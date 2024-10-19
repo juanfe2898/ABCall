@@ -36,14 +36,16 @@ class BillRepository {
     }
   }
 
-  async updateBillById(billId, billData) {
+  async createBill(billId, billData) {
+    
         let connection;
         try {
             connection = await this.pool.getConnection();
 
             const { name, amount } = billData;
+            const queryString = "INSERT factura SET nombreUsuario = " + name +", valorFactura = " + amount +", idFactura = " + billId +"";
             const result = await connection.query(
-                'UPDATE factura SET nombreUsuario = ?, valorFactura = ? WHERE idFactura = ?',
+                'INSERT factura SET nombreUsuario = ?, valorFactura = ?, idFactura = ?',
                 [name, amount, billId]
             );
 
@@ -60,7 +62,7 @@ class BillRepository {
 }
 
 
-const instance = new CallRepository();
+const instance = new BillRepository();
 Object.freeze(instance);
 
 module.exports = instance;
