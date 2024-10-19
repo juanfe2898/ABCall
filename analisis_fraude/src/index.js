@@ -1,7 +1,7 @@
 const { Kafka } = require('kafkajs');
 
 const { v4: uuidv4 } = require('uuid');
-
+const userRepository = require('./out_mysql');
 // Configure the Kafka client
 const kafka = new Kafka({
   clientId: 'ABCalAnalisisFraudeConsumerProducer',
@@ -30,7 +30,8 @@ const run = async () => {
   // Run the consumer and process each message
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
-
+      const messageValue = message.value.toString();
+      const eventData = JSON.parse(messageValue);
       switch (topic) {
         case 'factura-pagada':
             console.log("reciving factura-pagada topic");
@@ -44,8 +45,15 @@ const run = async () => {
           break;
         
         case 'usuario-actualizado':
-            console.log("reciving usuario-actualizado topic");
-            console.log('user must be updated here')
+          console.log("Recibiendo mensaje de 'usuario-actualizado'");
+
+          try {
+            const response = await userRepository.updateUserById(eventData.idUser, eventData);
+            console.log('Usuario actualizado correctamente:', response);
+          } catch (error) {
+            console.error('Error al actualizar usuario:', error.message);
+          }
+
           break;
       
         default:

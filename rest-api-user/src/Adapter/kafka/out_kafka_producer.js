@@ -1,7 +1,7 @@
 const { Kafka } = require('kafkajs');
-
+const { v4: uuidv4 } = require('uuid');
 class KafkaProducer {
-  constructor(clientId = 'ProducesAbCall', brokers = ['localhost:9092']) {
+  constructor(clientId = 'ABCalAnalisisFraudeConsumerProducer', brokers = ['vmkafkaabcall.eastus.cloudapp.azure.com:9092']) {
     this.kafka = new Kafka({
       clientId,
       brokers,
@@ -14,13 +14,13 @@ class KafkaProducer {
     await this.producer.connect();
   }
 
-  async sendMessage(key, value) {
+  async sendMessage(value) {
     try {
       await this.connect();
 
       const result = await this.producer.send({
         topic: 'usuario-actualizado',
-        messages: [{ key, value }],
+        messages: [{ key: uuidv4(), value: value }],
       });
       console.log('Mensaje enviado:', result);
     } catch (error) {
