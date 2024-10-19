@@ -30,7 +30,11 @@ const run = async () => {
   // Run the consumer and process each message
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
-      
+
+      console.log('got topic: '+ topic)
+      console.log('message: '+ message)
+      const messageValue = message.value.toString();
+      const eventData = JSON.parse(messageValue);
       switch (topic) {
         case 'factura-pagada':
             console.log("reciving factura-pagada topic");
