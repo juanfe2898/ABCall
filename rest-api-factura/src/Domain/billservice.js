@@ -1,5 +1,4 @@
 const billRepository = require('../Adapter/out_mysql');
-const KafkaProducer = require('../Adapter/kafka/out_kafka_producer');
 const { v4: uuidv4 } = require('uuid');
 const { Kafka } = require('kafkajs');
 
