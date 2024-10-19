@@ -17,7 +17,7 @@ class KafkaProducer {
   async sendMessage(value) {
     try {
       await this.connect();
-
+      console.log("value", value);
       const result = await this.producer.send({
         topic: 'usuario-actualizado',
         messages: [{ key: uuidv4(), value: value }],

@@ -30,8 +30,7 @@ const run = async () => {
   // Run the consumer and process each message
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
-      const messageValue = message.value.toString();
-      const eventData = JSON.parse(messageValue);
+      
       switch (topic) {
         case 'factura-pagada':
             console.log("reciving factura-pagada topic");
@@ -46,7 +45,9 @@ const run = async () => {
         
         case 'usuario-actualizado':
           console.log("Recibiendo mensaje de 'usuario-actualizado'");
-
+          const messageValue = message?.value;
+          console.log("message.value.toString()", message?.value)
+          const eventData = JSON.parse(messageValue);
           try {
             const response = await userRepository.updateUserById(eventData.idUser, eventData);
             console.log('Usuario actualizado correctamente:', response);
