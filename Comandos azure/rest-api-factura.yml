@@ -22,13 +22,13 @@ spec:
         image: crabcall.azurecr.io/samples/rest-api-factura:latest
         resources:
           requests:
-            cpu: 200m
-            memory: 1G
+            cpu: 100m
+            memory: 200Mi
           limits:
-            cpu: 600m
-            memory: 2G
+            cpu: 150m
+            memory: 250Mi
         ports:
-        - containerPort: 3002
+        - containerPort: 3003
 ---
 apiVersion: v1
 kind: Service
@@ -37,7 +37,7 @@ metadata:
   namespace: istio-system
 spec:
   ports:
-  - port: 3002
+  - port: 3003
   selector:
     app: rest-api-factura   
 ---
@@ -73,7 +73,7 @@ spec:
     - destination:
         host: rest-api-factura
         port:
-          number: 3002
+          number: 3003
 ---
 apiVersion: networking.istio.io/v1
 kind: DestinationRule

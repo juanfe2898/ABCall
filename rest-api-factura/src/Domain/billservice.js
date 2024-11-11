@@ -5,7 +5,7 @@ const { Kafka } = require('kafkajs');
 // Configure the Kafka client
 const kafka = new Kafka({
   clientId: 'ABCalAnalisisAudioConsumerProducer',
-  brokers: ['vmkafkaabcall.eastus.cloudapp.azure.com:9092'] // Replace with your Kafka broker addresses
+  brokers: ['localhost:9092'] // Replace with your Kafka broker addresses
 });
 
 // Create a producer instance
@@ -43,7 +43,7 @@ async function  produceMessage(billData){
       { key: uuidv4(), value: 'factura_pagada' },
       ],
   });
-  console.log('sent to audio-analizado topic')
+  console.log('sent to factura_pagada topic')
   // Disconnect the producer once the message is sent
 await producer.disconnect();
 }
