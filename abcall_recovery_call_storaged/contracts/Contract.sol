@@ -1,61 +1,66 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract TokenSequence {
-
-    // Estructura de la información que se guardará en el contrato
-    struct Info {
-        uint256 tokenId;
-        string data;
+contract AudioStorage {
+    struct File {
+        string metadata;      // Información del archivo como un string JSON
+        address uploader;     // Dirección del uploader
+        uint256 timestamp;    // Marca temporal de subida
     }
 
-    // Mapeo para almacenar la información relacionada a cada token
-    mapping(uint256 => Info) private tokenInfo;
+    // Mapeo para almacenar el archivo usando su hash como clave
+    mapping(string => File) private files;
 
-    // Contador de tokens
-    uint256 private tokenCounter;
+    // Evento para registrar que un archivo fue subido
+    event FileUploaded(
+        string indexed fileHash, 
+        string metadata, 
+        address indexed uploader, 
+        uint256 timestamp
+    );
 
-    // Dirección del dueño del contrato (solo él puede generar nuevos tokens)
-    address public owner;
+    // Función para agregar un archivo (usa el hash como ID único)
+    function uploadFile(
+        string calldata _fileHash, 
+        string calldata _metadata
+    ) external {
+        require(bytes(files[_fileHash].metadata).length == 0, "El archivo ya ha sido registrado.");
 
-    // Evento que se emite cuando se crea un nuevo token
-    event TokenCreated(uint256 tokenId, string data);
+        // Almacenamos los datos del archivo
+        files[_fileHash] = File({
+            metadata: _metadata,
+            uploader: msg.sender,
+            timestamp: block.timestamp
+        });
 
-    // Constructor para inicializar el contrato y asignar el dueño
-    constructor() {
-        owner = msg.sender;
-        tokenCounter = 0;
+        // Emitimos el evento para indicar que el archivo fue subido
+        emit FileUploaded(_fileHash, _metadata, msg.sender, block.timestamp);
     }
 
-    // Modificador para restringir acceso a funciones solo al dueño del contrato
-    modifier onlyOwner() {
-        require(msg.sender == owner, "Solo el propietario puede crear tokens.");
-        _;
+    // Función para obtener los detalles de un archivo específico
+    function getFile(string calldata _fileHash) external view returns (
+        string memory, address, uint256
+    ) {
+        require(bytes(files[_fileHash].metadata).length != 0, "El archivo no existe.");
+        
+        File memory file = files[_fileHash];
+        return (
+            file.metadata,
+            file.uploader,
+            file.timestamp
+        );
     }
 
-    // Función para crear un nuevo token y almacenar información
-    function createToken(string memory _data) public onlyOwner returns (uint256) {
-        tokenCounter += 1;
-        uint256 newTokenId = tokenCounter;
+    // Función para verificar si un archivo específico coincide con un hash y su metadata
+    function verifyFile(
+        string calldata _fileHash, 
+        string calldata _metadata
+    ) external view returns (bool) {
+        if (bytes(files[_fileHash].metadata).length == 0) {
+            return false; // El archivo no existe
+        }
 
-        // Guardamos la información en el mapeo
-        tokenInfo[newTokenId] = Info(newTokenId, _data);
-
-        // Emitimos el evento para notificar la creación del token
-        emit TokenCreated(newTokenId, _data);
-
-        return newTokenId;
-    }
-
-    // Función para obtener la información de un token por su ID
-    function getTokenInfo(uint256 _tokenId) public view returns (uint256, string memory) {
-        require(_tokenId > 0 && _tokenId <= tokenCounter, "Token no existe.");
-        Info memory info = tokenInfo[_tokenId];
-        return (info.tokenId, info.data);
-    }
-
-    // Función para obtener el total de tokens generados
-    function totalTokens() public view returns (uint256) {
-        return tokenCounter;
+        // Compara el metadata del archivo almacenado con el metadata proporcionado
+        return keccak256(abi.encodePacked(files[_fileHash].metadata)) == keccak256(abi.encodePacked(_metadata));
     }
 }
