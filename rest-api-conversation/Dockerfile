@@ -1,4 +1,4 @@
-FROM node:14.17.0
+FROM node:18.20.0
 
 WORKDIR /usr/src/app
 
@@ -13,4 +13,4 @@ COPY . .
 EXPOSE 3004
 
 
-CMD ["node", "smart_contract\smart_contract.js"]
+CMD ["node", "index.js"]
